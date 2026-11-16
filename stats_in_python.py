@@ -22,11 +22,11 @@ def load_data(filepath:str, column:int)->tuple[list, int]:
                 total_count +=1
                 continue # Skips non-numeric number and 'NaN'
             except IndexError:
-                print(f"Exiting: There is no valid 'list index' in column {column} in line {line_num} in file: {filepath}")
+                print(f"Exiting: There is no valid 'list index' in column {column} in line {line_num} in file: {filepath.split('/')[1]}")
                 exit()
     number_of_valid_values = len(numbers)
     if number_of_valid_values < 1:
-        print(f"Error: There were no valid number(s) in column {column} in file: {filepath}")
+        print(f"Error: There were no valid number(s) in column {column} in file: {filepath.split('/')[1]}")
         exit()
     return (numbers,total_count)
 
@@ -73,4 +73,31 @@ def calculate_median(number:list)->float:
     else:
         return float(sorted_numbers[count // 2])
 
+
+# MAIN
+data_file_path = ["files/data_file.txt","files/data_file2.txt","files/data_file3.txt"]
+
+
+for path in data_file_path:
+    for column in range(6):
+        data_file_tuple = load_data(path,column)
+        data_list = data_file_tuple[0]
+        count = data_file_tuple[1]
+        valid_num = len(data_file_tuple[0])
+        average = calculate_average(data_list)
+        maximum = get_max_and_min(data_list)[0]
+        minimum = get_max_and_min(data_list)[1]
+        variance = calculate_variance(data_list)
+        std_dev = calculate_std_dev(data_list)
+        median = calculate_median(data_list)
+        print(f"{path.split('/')[1]}\n"
+              f"Column: {column}\n\n"
+              f"Count: {count:.3f}\n"
+              f"ValidNum: {valid_num:.3f}\n"
+              f"Average: {average:.3f}\n"
+              f"Maximum: {maximum:.3f}\n"
+              f"Minimum: {minimum:.3f}\n"
+              f"Variance: {variance:.3f}\n"
+              f"Std Dev: {std_dev:.3f}\n"
+              f"Median: {median:.3f}\n")
 
