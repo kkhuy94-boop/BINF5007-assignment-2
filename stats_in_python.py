@@ -1,6 +1,7 @@
 import sys
 import math
 
+
 def load_data(filepath:str, column:int)->tuple[list, int]:
     """
     Loads data from a file into a list. 
@@ -14,18 +15,18 @@ def load_data(filepath:str, column:int)->tuple[list, int]:
             line_num = 1
             try:
                 num = float(line.split("\t")[column])
-                int(num) # Raises ValueError if num is 'NaN'
-                numbers.append(num)
                 line_num += 1
                 total_count +=1
             except ValueError: 
                 total_count +=1
-                continue # Skips non-numeric number and 'NaN'
+                continue # Skips non-numeric number 
             except IndexError:
                 print(f"Exiting: There is no valid 'list index' in column {column} in line {line_num} in file: {filepath.split('/')[1]}\n")
                 exit()
-    number_of_valid_values = len(numbers)
-    if number_of_valid_values < 1:
+            if not math.isnan(num):
+                numbers.append(num)
+                
+    if len(numbers) < 1:
         print(f"Error: There were no valid number(s) in column {column} in file: {filepath.split('/')[1]}\n")
         exit()
     return (numbers,total_count)
@@ -55,7 +56,6 @@ def calculate_variance(numbers:list)->float:
             list_squared_dev.append(sqr_dev)
     return sum(list_squared_dev) / (sample_size - 1)
         
-   
 
 def calculate_std_dev(numbers:list)->float:
     """ Returns the standard deviation of the numbers in the list. """
